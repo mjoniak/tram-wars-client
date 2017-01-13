@@ -4,11 +4,12 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import static com.android.volley.Response.*;
-
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
+
+import static com.android.volley.Response.ErrorListener;
+import static com.android.volley.Response.Listener;
 
 class ApiClient {
     private static final String GRANT_TYPE = "password";
@@ -30,22 +31,62 @@ class ApiClient {
         send(request);
     }
 
-    void postPosition(LatLng position, String accessToken) {
+    void postPosition(LatLng position, int routeId, String accessToken) {
         PositionDTO dto = new PositionDTO(position.latitude, position.longitude);
         PositionRequest request = new PositionRequest(
                 dto,
+                routeId,
                 accessToken,
-                new ApiClientListener<>(new IContinuation<PositionDTO>() {
-                    @Override
-                    public void continueWith(PositionDTO response) {
-                    }
-                }),
+                ApiClient.<PositionDTO>getNullListener(),
+                new ApiClientErrorListener());
+        send(request);
+    }
+
+    void getStops(String accessToken, IContinuation<StopDTO[]> continuation) {
+        StopsRequest request = new StopsRequest(
+                accessToken,
+                new ApiClientListener<>(continuation),
+                new ApiClientErrorListener());
+        send(request);
+    }
+
+    void getObjectives(String accessToken, String serializedStop, IContinuation<ObjectiveDTO[]> continuation) {
+        ObjectivesRequest request = new ObjectivesRequest(
+                accessToken,
+                serializedStop,
+                new ApiClientListener<>(continuation),
+                new ApiClientErrorListener());
+        send(request);
+    }
+
+    void postRoute(String accessToken,
+                   String stopName,
+                   float lat,
+                   float lng,
+                   String targetStopName,
+                   float targetLat,
+                   float targetLng,
+                   IContinuation<RouteDTO> continuation) {
+        StopDTO startDto = new StopDTO(stopName, lat, lng);
+        StopDTO targetDto = new StopDTO(targetStopName, targetLat, targetLng);
+        PostRouteRequest request = new PostRouteRequest(
+                accessToken,
+                new StopDTO[] { startDto, targetDto },
+                new ApiClientListener<>(continuation),
                 new ApiClientErrorListener());
         send(request);
     }
 
     private void send(Request req) {
         queue.add(req);
+    }
+
+    private static <T> ApiClientListener<T> getNullListener() {
+        return new ApiClientListener<>(new IContinuation<T>() {
+            @Override
+            public void continueWith(T response) {
+            }
+        });
     }
 
     private class ApiClientErrorListener implements ErrorListener {
@@ -55,7 +96,7 @@ class ApiClient {
         }
     }
 
-    private class ApiClientListener<T> implements Listener<T> {
+    private static class ApiClientListener<T> implements Listener<T> {
         private final IContinuation<T> continuation;
 
         ApiClientListener(IContinuation<T> continuation) {

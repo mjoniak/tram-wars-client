@@ -16,7 +16,6 @@ import static com.android.volley.Response.Listener;
 
 
 class AuthorisationRequest extends Request<AuthorisationTokenDTO> {
-    private static final String BASE_URL = "http://192.168.2.154:5000";
     private static final String RESOURCE_PATH = "/token";
 
     private final Gson gson = new Gson();
@@ -24,7 +23,7 @@ class AuthorisationRequest extends Request<AuthorisationTokenDTO> {
     private final Listener<AuthorisationTokenDTO> listener;
 
     AuthorisationRequest(AuthorisationDTO dto, Listener<AuthorisationTokenDTO> listener, ErrorListener errorListener) {
-        super(Method.POST, BASE_URL + RESOURCE_PATH, errorListener);
+        super(Method.POST, Const.BASE_URL + RESOURCE_PATH, errorListener);
         this.dto = dto;
         this.listener = listener;
     }

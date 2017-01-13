@@ -5,9 +5,11 @@ import com.google.android.gms.maps.model.LatLng;
 class GpsListener implements IContinuation<LatLng> {
 
     private final ApiClient client;
+    private final String accessToken;
 
-    GpsListener(ApiClient client) {
+    GpsListener(ApiClient client, String accessToken) {
         this.client = client;
+        this.accessToken = accessToken;
     }
 
     @Override
@@ -15,12 +17,10 @@ class GpsListener implements IContinuation<LatLng> {
         new Thread() {
             @Override
             public void run() {
-                client.authorise("abc", "Test@123", new IContinuation<AuthorisationTokenDTO>() {
-                    @Override
-                    public void continueWith(AuthorisationTokenDTO response) {
-                        client.postPosition(position, response.getAccessToken());
-                    }
-                });
+                ApplicationState state = ApplicationState.getInstance();
+                if (state.hasObjective()) {
+                    client.postPosition(position, state.getRouteId(), accessToken);
+                }
             }
         }.start();
     }
