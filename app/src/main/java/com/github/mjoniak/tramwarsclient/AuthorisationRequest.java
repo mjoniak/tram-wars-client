@@ -16,7 +16,7 @@ import static com.android.volley.Response.Listener;
 
 
 class AuthorisationRequest extends Request<AuthorisationTokenDTO> {
-    private static final String RESOURCE_PATH = "/token";
+    private static final String RESOURCE_PATH = "/connect/token";
 
     private final Gson gson = new Gson();
     private final AuthorisationDTO dto;
