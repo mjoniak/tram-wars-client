@@ -7,23 +7,23 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-class PermissionManager {
+public class PermissionManager {
 
-    boolean checkGpsPermissions(Context context) {
+    public boolean checkGpsPermissions(Context context) {
         return ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED;
     }
 
-    void requestGpsPermission(Activity activity) {
+    public void requestGpsPermission(Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[] {
                         android.Manifest.permission.ACCESS_FINE_LOCATION,
                         android.Manifest.permission.ACCESS_COARSE_LOCATION },
                 0);
     }
 
-    void requestInternetPermission(Activity activity) {
+    public void requestInternetPermission(Activity activity) {
         ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.INTERNET }, 0);
     }
 }

@@ -1,15 +1,16 @@
 package com.github.mjoniak.tramwarsclient;
 
+import com.github.mjoniak.tramwarsclient.domain.Objective;
 import com.google.android.gms.maps.model.LatLng;
 
-class ApplicationState {
+public class ApplicationState {
     private static ApplicationState instance;
 
     private Objective currentObjective;
 
     private ApplicationState() {}
 
-    static ApplicationState getInstance() {
+    public static ApplicationState getInstance() {
         if (instance == null) {
             instance = new ApplicationState();
         }
@@ -17,23 +18,23 @@ class ApplicationState {
         return instance;
     }
 
-    void setObjective(Objective objective) {
+    public void setObjective(Objective objective) {
         currentObjective = objective;
     }
 
-    boolean hasObjective() {
+    public boolean hasObjective() {
         return currentObjective != null;
     }
 
-    boolean objectiveFinished(LatLng currentPosition) {
+    public boolean objectiveFinished(LatLng currentPosition) {
         return hasObjective() && currentObjective.finished(currentPosition);
     }
 
-    void resetObjective() {
+    public void resetObjective() {
         setObjective(null);
     }
 
-    int getRouteId() {
+    public int getRouteId() {
         return currentObjective.getRouteId();
     }
 }
