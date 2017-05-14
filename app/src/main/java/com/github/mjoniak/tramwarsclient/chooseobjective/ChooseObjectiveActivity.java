@@ -1,5 +1,6 @@
 package com.github.mjoniak.tramwarsclient.chooseobjective;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +12,12 @@ import android.widget.Toast;
 
 import com.github.mjoniak.tramwarsclient.ApplicationState;
 import com.github.mjoniak.tramwarsclient.Const;
-import com.github.mjoniak.tramwarsclient.datasource.IContinuation;
-import com.github.mjoniak.tramwarsclient.datasource.IErrorHandler;
-import com.github.mjoniak.tramwarsclient.domain.Objective;
 import com.github.mjoniak.tramwarsclient.R;
 import com.github.mjoniak.tramwarsclient.datasource.ApiClient;
+import com.github.mjoniak.tramwarsclient.datasource.IContinuation;
+import com.github.mjoniak.tramwarsclient.datasource.IErrorHandler;
 import com.github.mjoniak.tramwarsclient.datasource.dto.RouteDTO;
+import com.github.mjoniak.tramwarsclient.domain.Objective;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class ChooseObjectiveActivity extends AppCompatActivity {
             names.add(name);
         }
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, names));
-        accessToken = getIntent().getStringExtra(Const.AUTH_TOKEN_EXTRA_KEY);
+        accessToken = ApplicationState.getInstance().getAccessToken();
         String serializedCurrentStop = getIntent().getStringExtra(Const.POSITION_EXTRA_KEY);
         String[] currentStopParts = getPartsFromSerializedStop(serializedCurrentStop);
         currentStopName = currentStopParts[0];
@@ -86,7 +87,9 @@ public class ChooseObjectiveActivity extends AppCompatActivity {
     }
 
     private void setObjective(RouteDTO response, String name, float lat, float lng) {
-        Toast.makeText(getApplicationContext(), "Started route to " + name, Toast.LENGTH_LONG).show();
+        Resources res = getResources();
+        String text = String.format(res.getString(R.string.route_started), name);
+        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
         ApplicationState state = ApplicationState.getInstance();
         state.setObjective(new Objective(new LatLng(lat, lng), response.getId()));
     }

@@ -6,17 +6,20 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.github.mjoniak.tramwarsclient.datasource.requests.AuthorisationRequest;
-import com.github.mjoniak.tramwarsclient.datasource.requests.ObjectivesRequest;
-import com.github.mjoniak.tramwarsclient.datasource.requests.PositionRequest;
-import com.github.mjoniak.tramwarsclient.datasource.requests.PostRouteRequest;
-import com.github.mjoniak.tramwarsclient.datasource.requests.StopsRequest;
 import com.github.mjoniak.tramwarsclient.datasource.dto.AuthorisationDTO;
 import com.github.mjoniak.tramwarsclient.datasource.dto.AuthorisationTokenDTO;
 import com.github.mjoniak.tramwarsclient.datasource.dto.ObjectiveDTO;
 import com.github.mjoniak.tramwarsclient.datasource.dto.PositionDTO;
 import com.github.mjoniak.tramwarsclient.datasource.dto.RouteDTO;
 import com.github.mjoniak.tramwarsclient.datasource.dto.StopDTO;
+import com.github.mjoniak.tramwarsclient.datasource.requests.AuthorisationRequest;
+import com.github.mjoniak.tramwarsclient.datasource.requests.GetProfileRequest;
+import com.github.mjoniak.tramwarsclient.datasource.requests.ObjectivesRequest;
+import com.github.mjoniak.tramwarsclient.datasource.requests.PositionRequest;
+import com.github.mjoniak.tramwarsclient.datasource.requests.PostRouteRequest;
+import com.github.mjoniak.tramwarsclient.datasource.requests.PutProfileRequest;
+import com.github.mjoniak.tramwarsclient.datasource.requests.StopsRequest;
+import com.github.mjoniak.tramwarsclient.domain.UserProfile;
 import com.google.android.gms.maps.model.LatLng;
 
 import static com.android.volley.Response.ErrorListener;
@@ -85,6 +88,22 @@ public class ApiClient {
                 new StopDTO[] { startDto, targetDto },
                 new ApiClientListener<>(continuation),
                 new ApiClientErrorListener());
+        send(request);
+    }
+
+
+    public void getProfile(String accessToken, String userName, IContinuation<UserProfile> continuation) {
+        GetProfileRequest request = new GetProfileRequest(
+                accessToken, userName,
+                new ApiClientListener<>(continuation), new ApiClientErrorListener());
+        send(request);
+    }
+
+
+    public void putProfile(String accessToken, String userName, String currentPassword, UserProfile userProfile, IContinuation<Object> continuation) {
+        PutProfileRequest request = new PutProfileRequest(
+                accessToken, userName, currentPassword, userProfile,
+                new ApiClientListener<>(continuation), new ApiClientErrorListener());
         send(request);
     }
 

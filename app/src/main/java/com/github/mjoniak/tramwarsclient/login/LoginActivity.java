@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.github.mjoniak.tramwarsclient.ApplicationState;
 import com.github.mjoniak.tramwarsclient.Const;
 import com.github.mjoniak.tramwarsclient.R;
 import com.github.mjoniak.tramwarsclient.datasource.ApiClient;
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
         EditText userNameEdit = (EditText)findViewById(R.id.userNameEdit);
         EditText passwordEdit = (EditText)findViewById(R.id.passwordEdit);
-        String userName = userNameEdit.getText().toString();
+        final String userName = userNameEdit.getText().toString();
         String password = passwordEdit.getText().toString();
 
         ApiClient client = new ApiClient(this, new IErrorHandler() {
@@ -48,8 +49,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void continueWith(AuthorisationTokenDTO response) {
                 progressBar.setVisibility(View.INVISIBLE);
+                ApplicationState appState = ApplicationState.getInstance();
+                appState.setAccessToken(response.getAccessToken());
+                appState.setUserName(userName);
                 Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                intent.putExtra(Const.AUTH_TOKEN_EXTRA_KEY, response.getAccessToken());
                 startActivity(intent);
 
             }

@@ -119,4 +119,10 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="profile">Profile</string>
+    <string name="title_activity_profile">Twój profil</string>
+    <string name="route_started">Wybrano trasę do %1$s</string>
+    <string name="save">Zapisz</string>
+    <string name="number_of_points">Liczba punktów:</string>
+    <string name="new_password">Nowe hasło</string>
+    <string name="saved_message">Zapisano!</string>
 </resources>

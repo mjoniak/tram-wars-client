@@ -1,9 +1,14 @@
 <resources>
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="colorPrimary">#ff9800</item>
+        <item name="colorPrimaryDark">#c66900</item>
+        <item name="colorAccent">#ff9800</item>
+        <item name="android:colorBackground">@android:color/background_light</item>
+        <item name="android:buttonStyle">@style/AppTheme.Button</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 </resources>
