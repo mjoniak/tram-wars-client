@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -217,7 +218,9 @@ public class MapsActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_ACCESS_LOCATION) {
+        if (requestCode == REQUEST_ACCESS_LOCATION
+                && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
             registerGpsUpdates();
         }
@@ -227,6 +230,17 @@ public class MapsActivity
         if (!hasLocationAccessPermission()) {
 
             throw new SecurityException("GPS not allowed!");
+        }
+
+
+        int off = 0;
+        try {
+            off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException ignored) {}
+
+        if (off == 0) {
+            Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(onGPS);
         }
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -267,7 +281,6 @@ public class MapsActivity
 
     @Override
     public void requestPermissions() {
-        ActivityCompat.requestPermissions(this, new String[] { android.Manifest.permission.INTERNET }, 0);
         ActivityCompat.requestPermissions(this, new String[] {
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION },
