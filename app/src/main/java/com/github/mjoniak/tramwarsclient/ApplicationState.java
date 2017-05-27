@@ -7,10 +7,9 @@ public class ApplicationState {
     private static ApplicationState instance;
 
     private Objective currentObjective;
-
     private String accessToken;
-
     private String userName;
+    private LatLng position;
 
     private ApplicationState() {}
 
@@ -56,5 +55,17 @@ public class ApplicationState {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setPosition(LatLng position) {
+        this.position = position;
+    }
+
+    public boolean hasPosition() {
+        return position != null;
+    }
+
+    public LatLng getPosition() {
+        return position;
     }
 }

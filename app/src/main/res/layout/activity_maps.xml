@@ -26,14 +26,33 @@
             android:layout_height="wrap_content"
             android:text="@string/profile" />
 
-        <Button
-            android:id="@+id/points_counter"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_gravity="top|end"
             android:layout_alignParentTop="true"
-            android:background="@android:drawable/toast_frame"
-            android:text="0" />
+            android:layout_alignParentEnd="true">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/found_stops_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:clickable="false"
+                android:tint="@color/black_overlay"/>
+
+            <TextView
+                android:id="@+id/found_stops_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0"
+                android:elevation="16dp"
+                android:textColor="@android:color/white"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                tools:ignore="HardcodedText" />
+
+        </FrameLayout>
 
     </RelativeLayout>
 

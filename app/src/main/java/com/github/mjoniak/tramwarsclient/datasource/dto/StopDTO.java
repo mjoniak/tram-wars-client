@@ -1,5 +1,7 @@
 package com.github.mjoniak.tramwarsclient.datasource.dto;
 
+import java.util.Locale;
+
 @SuppressWarnings("unused")
 public class StopDTO {
     private String name;
@@ -24,5 +26,9 @@ public class StopDTO {
 
     public float getLon() {
         return lon;
+    }
+
+    public String serialize() {
+         return String.format(Locale.getDefault(), "%s,%f,%f", getName(), getLat(), getLon());
     }
 }
